@@ -17,6 +17,8 @@ namespace lime
 
 	struct ApplicationEvent
 	{
+		int64_t oldFrameTimestamp;
+		int64_t currentFrameTimestamp;
 		double deltaTime;
 		ApplicationEventType type;
 

@@ -118,7 +118,7 @@ class FileWatcher
 		}
 	}
 
-	@:noCompletion private function this_onUpdate(_):Void
+	@:noCompletion private function this_onUpdate(_0, _1, _2):Void
 	{
 		#if (lime_cffi && !macro)
 		NativeCFFI.lime_file_watcher_update(handle);

@@ -1,5 +1,7 @@
 package lime.system;
 
+import haxe.Int64;
+
 import lime.app.Application;
 import lime.app.Event;
 
@@ -165,7 +167,7 @@ class BackgroundWorker
 		doWork.dispatch(__runMessage);
 	}
 
-	@:noCompletion private function __update(deltaTime:Float):Void
+	@:noCompletion private function __update(deltaTime:Float, oldFrameTimestamp:Int64, currentFrameTimestamp:Int64):Void
 	{
 		#if native
 		var message = __messageQueue.pop(false);

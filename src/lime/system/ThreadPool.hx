@@ -1,5 +1,7 @@
 package lime.system;
 
+import haxe.Int64;
+
 import lime.app.Application;
 import lime.app.Event;
 import lime.system.WorkOutput;
@@ -737,7 +739,7 @@ class ThreadPool extends WorkOutput
 	/**
 		Processes the job queues, then processes incoming events.
 	**/
-	private function __update(deltaTime:Float):Void
+	private function __update(deltaTime:Float, _discard1:Int64, _discard2:Int64):Void
 	{
 		if (!isMainThread())
 		{

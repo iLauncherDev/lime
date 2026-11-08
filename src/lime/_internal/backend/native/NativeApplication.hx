@@ -198,7 +198,7 @@ class NativeApplication
 			case UPDATE:
 				updateTimer();
 
-				parent.onUpdate.dispatch(applicationEventInfo.deltaTime);
+				parent.onUpdate.dispatch(applicationEventInfo.deltaTime, applicationEventInfo.oldFrameTimestamp, applicationEventInfo.currentFrameTimestamp);
 
 				#if (!macro && HXCPP_TRACY)
 				cpp.vm.tracy.TracyProfiler.frameMark();
@@ -796,18 +796,22 @@ class NativeApplication
 
 @:keep private class ApplicationEventInfo
 {
+	public var oldFrameTimestamp:Int64;
+	public var currentFrameTimestamp:Int64;
 	public var deltaTime:Float;
 	public var type:ApplicationEventType;
 
-	public function new(type:ApplicationEventType = null, deltaTime:Float = 0.0)
+	public function new(type:ApplicationEventType = null, ?oldFrameTimestamp:Int64, ?currentFrameTimestamp:Int64, ?deltaTime:Float)
 	{
 		this.type = type;
-		this.deltaTime = deltaTime;
+		this.oldFrameTimestamp = oldFrameTimestamp == null ? Int64.ofInt(0) : oldFrameTimestamp;
+		this.currentFrameTimestamp = currentFrameTimestamp == null ? Int64.ofInt(0) : currentFrameTimestamp;
+		this.deltaTime = deltaTime == null ? 0.0 : deltaTime;
 	}
 
 	public function clone():ApplicationEventInfo
 	{
-		return new ApplicationEventInfo(type, deltaTime);
+		return new ApplicationEventInfo(type, oldFrameTimestamp, currentFrameTimestamp, deltaTime);
 	}
 }
 

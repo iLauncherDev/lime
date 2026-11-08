@@ -817,6 +817,8 @@ namespace lime
 	{
 		ApplicationEvent applicationEvent;
 		applicationEvent.type = UPDATE;
+		applicationEvent.oldFrameTimestamp = frameTime.previous;
+		applicationEvent.currentFrameTimestamp = frameTime.current;
 		applicationEvent.deltaTime = std::fmax(0.0, (double)frameTime.frame / 1e6);
 		ApplicationEvent::Dispatch(&applicationEvent);
 
@@ -828,9 +830,9 @@ namespace lime
 	void Application::FramePacer()
 	{
 		// Measure the total duration of the current frame (update + render)
+		frameTime.previous = frameTime.current;
 		frameTime.current = SDL_GetTicksNS();
 		frameTime.frame = frameTime.current - frameTime.previous;
-		frameTime.previous = frameTime.current;
 
 		// If the frame was faster than the target frame time, delay to cap FPS
 		if (frameTime.frame < frameTime.target)
@@ -839,9 +841,9 @@ namespace lime
 			SDL_DelayPrecise(frameTime.target - frameTime.frame);
 
 			// Measure the actual time spent waiting and add it to frameTime
+			frameTime.previous = frameTime.current;
 			frameTime.current = SDL_GetTicksNS();
 			frameTime.frame += frameTime.current - frameTime.previous;
-			frameTime.previous = frameTime.current;
 		}
 	}
 
